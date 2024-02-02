@@ -68,20 +68,22 @@ class CreateExpenses with ChangeNotifier {
       WallateRepo repo = getIt.get<WallateRepo>();
 
       Option r = await repo.decrWalate(value);
-      if(r.isNone()){
-      await _insertExpenses();
-            masge = " تم الاضافة";
+      if (r.isNone()) {
+        await _insertExpenses();
+        masge = " تم الاضافة";
       }
-      var s = (await getIt.get<ExpensesTitleAbstRepo>().alltitel())
-          .where((e) => e.text == title)
-          .firstOrNull;
-      if (s == null) {
-        await getIt
-            .get<ExpensesTitleAbstRepo>()
-            .insertIfNotExit(ExpensesTitle(id: 0, text: title));
-      }
+
+      insertExpensesTitle();
+    } else {
+      masge = "الرصيد لا يكفي";
     }
     notifyListeners();
+  }
+
+  void insertExpensesTitle() async {
+    await getIt
+        .get<ExpensesTitleAbstRepo>()
+        .insertIfNotExit(ExpensesTitle(id: 0, text: title));
   }
 
   Future<void> _insertExpenses() async {
