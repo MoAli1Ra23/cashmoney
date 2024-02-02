@@ -1,19 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
- import 'package:flutter/material.dart';
-
- import 'package:provider/provider.dart';
-
+import 'package:cashmoney/feature/expenses/domain/entity/expense.dart';
+import 'package:cashmoney/shared/styles/styles.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../incomes/UI/widget/multi_func_list.dart';
 import '../view_model/manage_expenses.dart';
 import 'create_epneses_page.dart';
-
 class ManageExpensesPage extends StatelessWidget {
   const ManageExpensesPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     context.read<ManageExpenses>().getExpenses();
-    return   SafeArea(
-      
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 5,
@@ -31,11 +29,15 @@ class ManageExpensesPage extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: (){
-          Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CreateExpensesPage()));
-        },child: const Icon(Icons.add)),
-        body: ExpenseList(expensesProvide:        Provider.of<ManageExpenses>(context, listen: true),
-),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => CreateExpensesPage()));
+            },
+            child: const Icon(Icons.add)),
+        body: ExpenseList(
+          expensesProvide: Provider.of<ManageExpenses>(context, listen: true),
+        ),
       ),
     );
   }
@@ -50,44 +52,55 @@ class ExpenseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var ll = expensesProvide.expenses;
+    var expenses = expensesProvide.expenses;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ListView.builder(
-        itemCount: ll.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-            color:index%2==0?Colors.white:Colors.blueGrey.shade400,
-            border: Border.all(),
-            borderRadius: const BorderRadius.horizontal(left: Radius.circular(2),)
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-            Text(
-              ll[index].title,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              ll[index].value.toString(),
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              ll[index].details,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ]),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: MultiFuncList<Expense>(
+          items: expensesProvide.expenses,
+          builder: (context, index) {
+            return ExpencesListItem(
+              expense: expenses[index],
+            );
+          },
+        ));
+  }
+}
+
+class ExpencesListItem extends StatelessWidget {
+  const ExpencesListItem({
+    super.key,
+    required this.expense,
+  });
+
+  final Expense expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+           borderRadius: BorderRadius.horizontal(
+            left: Radius.circular(2),
+          )),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Text(
+          expense.title,
+          style: Styles.textb20
         ),
-      ),
+        Text(
+          expense.value.toString(),
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          expense.details,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ]),
     );
   }
 }
