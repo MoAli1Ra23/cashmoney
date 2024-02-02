@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cashmoney/feature/incomes/domain/entity/income.dart';
+import 'package:cashmoney/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../widgets/cutom_app_bar.dart';
 import '../view_model/manage_incomes.dart';
 import '../widget/income_list_item.dart';
 import '../widget/multi_func_list.dart';
@@ -17,22 +19,24 @@ class ManageIcomesPage extends StatelessWidget {
     final incomeProvider = Provider.of<ManageIcomes>(context);
     incomeProvider.income();
     return Scaffold(
-        appBar: AppBar(
-          elevation: 5,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-          title: const Text(
-            " الدخل",
-            style: TextStyle(
-              //style
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-        ),
+
+        // appBar: AppBar(
+        //   elevation: 5,
+        //   leading: IconButton(
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //       },
+        //       icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+        //   title: const Text(
+        //     " الدخل",
+        //     style: TextStyle(
+        //       //style
+        //       fontWeight: FontWeight.bold,
+        //       fontSize: 22,
+        //     ),
+        //   ),
+        // ),
+
         floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.of(context).push(
@@ -43,18 +47,34 @@ class ManageIcomesPage extends StatelessWidget {
             },
             child: const Icon(Icons.add)),
         body: //const Center(child: Text("ddd")),
-            MultiFuncList<Income>(
-                onDeleteAll: (p0) {
-                  incomeProvider.deleteAll(p0);
-                },
-                onDismiss: (p0) {
-                  incomeProvider.delete(p0);
-                  
-                },
-                items: incomeProvider.incomes,
-                builder: (context, index) {
-                  return IncomeListItem(income: incomeProvider.incomes[index]);
-                })
+            SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+            child: Column(
+              children: [
+                const CustomAppBar(
+                  rightIcon: Icon(Icons.arrow_back_ios_new_rounded),
+                  title: Text("الدخل",style: Styles.textb30,),
+                  liftIcon: Icon(Icons.arrow_back_ios_new_rounded),
+                ),
+                const SizedBox(height: 10,),
+                MultiFuncList<Income>(
+                  height: MediaQuery.of(context).size.height-200,
+                    onDeleteAll: (p0) {
+                      incomeProvider.deleteAll(p0);
+                    },
+                    onDismiss: (p0) {
+                      incomeProvider.delete(p0);
+                    },
+                    items: incomeProvider.incomes,
+                    builder: (context, index) {
+                      return IncomeListItem(
+                          income: incomeProvider.incomes[index]);
+                    }),
+              ],
+            ),
+          ),
+        )
         // ListIncoms(incomes:)
 
         // body: IncomeList(
@@ -64,8 +84,9 @@ class ManageIcomesPage extends StatelessWidget {
         );
   }
 }
+
 /// deprecated
-/// 
+///
 class IncomeList extends StatelessWidget {
   const IncomeList({
     Key? key,
