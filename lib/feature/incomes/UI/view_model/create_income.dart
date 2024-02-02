@@ -26,15 +26,10 @@ class CreateInCome with ChangeNotifier {
       isValueValid = null;
     }
     notifyListeners();
-    print("/++++++++++++++++/");
-    print(value);
-    print(isValueValid);
   }
 
   Future<void> validateSource(String value) async {
-    var x = await getIt.get<SourceRepo>().allsources();
-    var d = x.map((e) => e.text).toList();
-    sources = d.where((element) => element.contains(value)).toList();
+    await _filterSource(value);
     if (value.length < 2) {
       isSourceValide = "Soo short";
     } else {
@@ -43,6 +38,12 @@ class CreateInCome with ChangeNotifier {
       isSourceNew = true;
     }
     notifyListeners();
+  }
+
+  Future<void> _filterSource(String value) async {
+    var x = await getIt.get<SourceRepo>().allsources();
+    var d = x.map((e) => e.text).toList();
+    sources = d.where((element) => element.contains(value)).toList();
   }
 
   void selctSourc(int index) {
@@ -58,11 +59,18 @@ class CreateInCome with ChangeNotifier {
       print("sourc: $source");
       print("value: $value");
     }
-    if (isSourceNew) {
-      await getIt.get<SourceRepo>().insert(Source(id: 0, text: source));
-    }
+    if (isSourceNew) await _insertSource();
+
     await getIt.get<IncomeabReo>().insert(
         Income(date: DateTime.now(), id: 0, source: source, value: value));
+    await _updateWalate();
+  }
+
+  Future<void> _insertSource() async {
+    await getIt.get<SourceRepo>().insert(Source(id: 0, text: source));
+  }
+
+  Future<void> _updateWalate() async {
     var w = (await getIt.get<WallateRepo>().allWallates()).first;
     var neww = w.copyWith(balance: w.balance + value);
 
