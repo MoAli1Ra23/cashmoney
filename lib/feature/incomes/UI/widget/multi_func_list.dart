@@ -102,7 +102,8 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
             ],
           ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * .88,
+          height: widget.height?? MediaQuery.of(context).size.height * .88,
+          width: widget.width?? MediaQuery.of(context).size.width,
           child: ListView.builder(
               physics: widget.physics ?? const ClampingScrollPhysics(),
               itemCount: items.length,
