@@ -1,12 +1,17 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../shared/error/failure.dart';
 import '../entity/wallate.dart';
 
 abstract class WallateRepo {
   Future<Wallate> getWallate( );
 
-  Future<int> del(Wallate wallate);
-  Future<int> update(Wallate wallate);
+  // // Future<int> del(Wallate wallate);
+  //   @Deprecated("use getWallate  ")
+
+  // Future<int> update(Wallate wallate);
   Future<int> addToWalate(double val);
-  Future<int> decrWalate(double val);
+  Future<Option<Failure>> decrWalate(double val);
 
   ///deprecated
   ///

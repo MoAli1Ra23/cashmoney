@@ -1,4 +1,6 @@
- import 'package:injectable/injectable.dart';
+ import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+import '../../../../shared/error/failure.dart';
 import '../../domain/entity/wallate.dart';
 
 import '../../domain/repo/wallate_repo.dart';
@@ -34,9 +36,8 @@ class WallateDRepo extends WallateRepo{
   }
   
   @override
-  Future<int> decrWalate(double val) {
-    // TODO: implement decrToWalate
-    throw UnimplementedError();
+  Future<Option<Failure>> decrWalate(double val) {
+     throw UnimplementedError();
   }
 
 }

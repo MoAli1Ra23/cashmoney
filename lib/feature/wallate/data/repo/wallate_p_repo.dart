@@ -1,7 +1,9 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../injection.dart';
 import '../../../../shared/data/app_db.dart';
+import '../../../../shared/error/failure.dart';
 import '../../domain/entity/wallate.dart';
 import '../../domain/repo/wallate_repo.dart';
 
@@ -60,8 +62,6 @@ WHERE id=${1}
 
   @override
   Future<int> addToWalate(double val) async {
-    AppDb appDb = getIt.get<AppDb>();
-
     Wallate wallate = await getWallate();
     var updatedWallate = wallate.copyWith(balance: wallate.balance + val);
     var f = await update(updatedWallate);
@@ -69,8 +69,14 @@ WHERE id=${1}
   }
 
   @override
-  Future<int> decrWalate(double val) {
-    // TODO: implement decrToWalate
-    throw UnimplementedError();
+  Future<Option<Failure>> decrWalate(double val) async {
+    Wallate wallate = await getWallate();
+    if (wallate.balance < val) {
+      return const Some(LowWallateBalanceFailure(msg: "رصيد غير كافي"));
+    }
+
+    var updatedWallate = wallate.copyWith(balance: wallate.balance + val);
+    await update(updatedWallate);
+    return none();
   }
 }
