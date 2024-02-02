@@ -21,20 +21,24 @@ class ExpensesTitleProdRepo extends ExpensesTitleAbstRepo {
 
   @override
   Future<int> del(ExpensesTitle title) {
-     throw UnimplementedError();
+    throw UnimplementedError();
   }
 
   @override
-  Future<int> insert(ExpensesTitle title) async {
-        var x = getIt.get<AppDb>();
-return await x.insert(''' 
+  Future<int> insertIfNotExit(ExpensesTitle title) async {
+    AppDb appDb = getIt.get<AppDb>();
+    ExpensesTitle? s = (await alltitel()).firstOrNull;
+    if (s == null) {
+      return await appDb.insert(''' 
 INSERT INTO  expensesTitle(text)VALUES("${title.text}")
 ''');
-
-   }
+    } else {
+      return 0;
+    }
+  }
 
   @override
   Future<int> update(ExpensesTitle title) {
-     throw UnimplementedError();
+    throw UnimplementedError();
   }
 }

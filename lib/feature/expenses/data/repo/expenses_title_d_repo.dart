@@ -23,7 +23,7 @@ class ExpensesTitleDebugRepo extends ExpensesTitleAbstRepo {
   }
 
   @override
-  Future<int> insert(ExpensesTitle title) {
+  Future<int> insertIfNotExit(ExpensesTitle title) {
     // TODO: implement insert
     throw UnimplementedError();
   }

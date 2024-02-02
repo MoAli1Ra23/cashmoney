@@ -78,7 +78,7 @@ class CreateExpenses with ChangeNotifier {
       if (s == null) {
         await getIt
             .get<ExpensesTitleAbstRepo>()
-            .insert(ExpensesTitle(id: 0, text: title));
+            .insertIfNotExit(ExpensesTitle(id: 0, text: title));
       }
     }
     notifyListeners();
