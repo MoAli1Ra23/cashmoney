@@ -1,31 +1,18 @@
- 
 import 'package:flutter/foundation.dart';
 
 import '../../../injection.dart';
 import '../domain/entity/wallate.dart';
 import '../domain/repo/wallate_repo.dart';
 
-class WallateViewModel extends ChangeNotifier{
+class WallateViewModel extends ChangeNotifier {
+  String text = "0";
 
-    String text="0";
+  Future<void> getValue() async {
+    WallateRepo wallateRepo = getIt.get<WallateRepo>();
 
-Future<void> getValue()
-async {
-  var x=  getIt.get<WallateRepo>();
-  var l= await x.allWallates();
-  Wallate? f=l.firstOrNull;
-  if(f==null)
-  {
+    Wallate w = await wallateRepo.getWallate();
 
-f=  Wallate(id: 0, balance: 0);
-x.insert(f);
+    text = w.balance.toString();
+    notifyListeners();
   }
-  text= f.balance.toString();
-  notifyListeners();
-  
 }
-
-
-
-
-} 

@@ -17,7 +17,7 @@ class WallateDRepo extends WallateRepo{
   }
 
   @override
-  Future<int> insert(Wallate wallate) {
+  Future<Wallate > getWallate( ) {
     // TODO: implement insert
     throw UnimplementedError();
   }
@@ -25,6 +25,18 @@ class WallateDRepo extends WallateRepo{
   @override
   Future<int> update(Wallate wallate) {
      throw UnimplementedError();
+  }
+  
+  @override
+  Future<int> addToWalate(double val) {
+    // TODO: implement addToWalate
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<int> decrWalate(double val) {
+    // TODO: implement decrToWalate
+    throw UnimplementedError();
   }
 
 }

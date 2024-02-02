@@ -1,4 +1,3 @@
- 
 import 'package:injectable/injectable.dart';
 
 import '../../../../injection.dart';
@@ -6,7 +5,6 @@ import '../../../../shared/data/app_db.dart';
 import '../../domain/entity/wallate.dart';
 import '../../domain/repo/wallate_repo.dart';
 
- 
 @Injectable(as: WallateRepo)
 @Environment('prod')
 class WallatePRepo extends WallateRepo {
@@ -23,12 +21,30 @@ class WallatePRepo extends WallateRepo {
   }
 
   @override
-  Future<int> insert(Wallate wallate) {
-    var x = getIt.get<AppDb>();
+  Future<Wallate> getWallate() async {
+    var appDb = getIt.get<AppDb>();
 
-    return x.insert(''' 
+    Wallate? w = await _getWallateOrNull(appDb);
+    if (w != null) return w;
+
+    Wallate wallate = const Wallate(id: 1, balance: 0);
+
+    await _insertWallate(appDb, wallate);
+
+    return wallate;
+  }
+
+  Future<void> _insertWallate(AppDb appDb, Wallate wallate) async {
+    await appDb.insert(''' 
 INSERT INTO wallate(balance)VALUES(${wallate.balance})
-''');
+    ''');
+  }
+
+  Future<Wallate?> _getWallateOrNull(AppDb appDb) async {
+    var l = await appDb.readdate(" SELECT *FROM 'wallate'");
+
+    Wallate? w = l.map((e) => Wallate.fromMap(e)).toList().firstOrNull;
+    return w;
   }
 
   @override
@@ -40,5 +56,21 @@ INSERT INTO wallate(balance)VALUES(${wallate.balance})
   
 WHERE id=${1}
     ''');
+  }
+
+  @override
+  Future<int> addToWalate(double val) async {
+    AppDb appDb = getIt.get<AppDb>();
+
+    Wallate wallate = await getWallate();
+    var updatedWallate = wallate.copyWith(balance: wallate.balance + val);
+    var f = await update(updatedWallate);
+    return f;
+  }
+
+  @override
+  Future<int> decrWalate(double val) {
+    // TODO: implement decrToWalate
+    throw UnimplementedError();
   }
 }
