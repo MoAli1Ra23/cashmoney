@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashmoney/feature/incomes/domain/entity/income.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/manage_incomes.dart';
+import '../widget/income_list_item.dart';
+import '../widget/multi_func_list.dart';
 import 'create_income_page.dart';
 
 class ManageIcomesPage extends StatelessWidget {
@@ -10,12 +13,11 @@ class ManageIcomesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final incomeProvider = ;
-    // var ll = incomeProvider.incomes;
-
-    context.read<ManageIcomes>().income();
+    // context.read<ManageIcomes>().income();
+    final incomeProvider = Provider.of<ManageIcomes>(context);
+    incomeProvider.income();
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           elevation: 5,
           leading: IconButton(
               onPressed: () {
@@ -31,23 +33,39 @@ class ManageIcomesPage extends StatelessWidget {
             ),
           ),
         ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) =>   CreateInComePage(),
-              ),
-            );
-          },
-          child: const Icon(Icons.add)),
-      body: IncomeList(
-        incomeProvider: 
-        Provider.of<ManageIcomes>(context, listen: true),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CreateInComePage(),
+                ),
+              );
+            },
+            child: const Icon(Icons.add)),
+        body: //const Center(child: Text("ddd")),
+            MultiFuncList<Income>(
+                onDeleteAll: (p0) {
+                  incomeProvider.deleteAll(p0);
+                },
+                onDismiss: (p0) {
+                  incomeProvider.delete(p0);
+                  
+                },
+                items: incomeProvider.incomes,
+                builder: (context, index) {
+                  return IncomeListItem(income: incomeProvider.incomes[index]);
+                })
+        // ListIncoms(incomes:)
+
+        // body: IncomeList(
+        //   incomeProvider:
+        //   Provider.of<ManageIcomes>(context, listen: true),
+        // ),
+        );
   }
 }
-
+/// deprecated
+/// 
 class IncomeList extends StatelessWidget {
   const IncomeList({
     Key? key,
@@ -60,7 +78,7 @@ class IncomeList extends StatelessWidget {
     var ll = incomeProvider.incomes;
 
     return Padding(
-      padding: const EdgeInsets.symmetric( horizontal:10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListView.builder(
         itemCount: ll.length,
         itemBuilder: (context, index) {
