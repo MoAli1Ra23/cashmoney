@@ -55,14 +55,13 @@ class CreateInCome with ChangeNotifier {
   }
 
   Future<void> save() async {
-    if (isSourceValide == null && isValueValid == null) {
- 
-    }
+    if (isSourceValide == null && isValueValid == null) {}
     if (isSourceNew) await _insertSource();
 
     await getIt.get<IncomeabReo>().insert(
         Income(date: DateTime.now(), id: 0, source: source, value: value));
     await _updateWalate();
+    reset();
   }
 
   Future<void> _insertSource() async {
@@ -71,5 +70,16 @@ class CreateInCome with ChangeNotifier {
 
   Future<void> _updateWalate() async {
     await getIt.get<WallateRepo>().addToWalate(value);
+  }
+
+  void reset() {
+    value = 0;
+    source = "";
+    date = DateTime.now();
+    isValueValid = null;
+    isSourceValide = null;
+    sources = [];
+    isSourceNew = true;
+    notifyListeners();
   }
 }
