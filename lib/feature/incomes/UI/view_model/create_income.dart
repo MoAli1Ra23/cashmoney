@@ -56,8 +56,7 @@ class CreateInCome with ChangeNotifier {
 
   Future<void> save() async {
     if (isSourceValide == null && isValueValid == null) {
-      print("sourc: $source");
-      print("value: $value");
+ 
     }
     if (isSourceNew) await _insertSource();
 
@@ -71,9 +70,6 @@ class CreateInCome with ChangeNotifier {
   }
 
   Future<void> _updateWalate() async {
-    var w = (await getIt.get<WallateRepo>().allWallates()).first;
-    var neww = w.copyWith(balance: w.balance + value);
-
-    await getIt.get<WallateRepo>().update(neww);
+    await getIt.get<WallateRepo>().addToWalate(value);
   }
 }
