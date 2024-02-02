@@ -1,5 +1,4 @@
- 
- 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../injection.dart';
@@ -63,29 +62,35 @@ class CreateExpenses with ChangeNotifier {
   }
 
   Future<void> save() async {
-   var w=  (await getIt.get<WallateRepo>().allWallates()).first;
     if (isDetailsValid == null &&
         isTitleValid == null &&
         isValueValid == null) {
-          if(w.balance<value)
-          {
-masge="الرصيد غير كافي";
+      WallateRepo repo = getIt.get<WallateRepo>();
 
-          }
-          else
-          {
-            w.copyWith(balance: w.balance-value);
-            await  getIt.get<WallateRepo>().update(w);
-            await getIt.get<ExpenseAbstrctRepo>().insert(Expense(date: DateTime.now(), details: details,title: title,value: value, note: note ?? "لا ملاحظات",id:0));
-            var s=( await getIt.get<ExpensesTitleAbstRepo>().alltitel()).where((e) => e.text==title).firstOrNull;
-            if(s==null)
-            {
-               await getIt.get<ExpensesTitleAbstRepo>().insert(ExpensesTitle(id: 0, text: title));
+      Option r = await repo.decrWalate(value);
+      if(r.isNone()){
+      await _insertExpenses();
+            masge = " تم الاضافة";
+      }
+      var s = (await getIt.get<ExpensesTitleAbstRepo>().alltitel())
+          .where((e) => e.text == title)
+          .firstOrNull;
+      if (s == null) {
+        await getIt
+            .get<ExpensesTitleAbstRepo>()
+            .insert(ExpensesTitle(id: 0, text: title));
+      }
+    }
+    notifyListeners();
+  }
 
-            }
-            masge="تم";
-          }
-         }
-         notifyListeners();
+  Future<void> _insertExpenses() async {
+    await getIt.get<ExpenseAbstrctRepo>().insert(Expense(
+        date: DateTime.now(),
+        details: details,
+        title: title,
+        value: value,
+        note: note ?? "لا ملاحظات",
+        id: 0));
   }
 }
