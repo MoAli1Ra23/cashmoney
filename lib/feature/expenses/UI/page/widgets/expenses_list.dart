@@ -21,7 +21,7 @@ class ExpenseList extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: MultiFuncList<Expense>(
-          onDeleteAll:( delExpenses) => expensesProvide.deleteAll(delExpenses),
+          onDeleteAll:( List delExpenses) => expensesProvide.deleteAll(delExpenses.cast()),
           height: height,
           items: expensesProvide.expenses,
           builder: (context, index) {

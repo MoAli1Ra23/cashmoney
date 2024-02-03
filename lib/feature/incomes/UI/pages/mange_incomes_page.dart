@@ -60,8 +60,8 @@ class ManageIcomesPage extends StatelessWidget {
                 const SizedBox(height: 10,),
                 MultiFuncList<Income>(
                   height: MediaQuery.of(context).size.height-200,
-                    onDeleteAll: (p0) {
-                      incomeProvider.deleteAll(p0);
+                    onDeleteAll: (List p0) {
+                      incomeProvider.deleteAll(p0.cast());
                     },
                     onDismiss: (p0) {
                       incomeProvider.delete(p0);
