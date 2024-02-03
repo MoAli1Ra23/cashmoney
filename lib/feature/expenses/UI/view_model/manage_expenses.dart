@@ -10,4 +10,9 @@ class ManageExpenses extends ChangeNotifier {
     expenses = await getIt.get<ExpenseAbstrctRepo>().allexpenses();
     notifyListeners();
   }
+
+  Future<void> deleteAll(List<Expense> expense) async {
+    await getIt.get<ExpenseAbstrctRepo>().deleteAll(expenses);
+    await getExpenses();
+  }
 }
