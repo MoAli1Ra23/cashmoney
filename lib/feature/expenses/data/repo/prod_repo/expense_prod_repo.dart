@@ -12,22 +12,26 @@ class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
   @preResolve
   @override
   Future<List<Expense>> allexpenses() async {
-    var x = await getIt.get<AppDb>().readdate(" SELECT *FROM  'expense'");
-    return x.map((e) => Expense.fromMap(e)).toList();
+    AppDb appDb = getIt.get<AppDb>();
+    var re = await appDb.readdate(" SELECT *FROM  'expense'");
+    return re.map((e) => Expense.fromMap(e)).toList();
   }
 
   @preResolve
   @override
-  Future<int> del(Expense expense) {
-    throw UnimplementedError();
+  Future<int> del(Expense expense) async {
+// 'DELETE FROM Test WHERE name = ?', ['another name']
+    AppDb appDb = getIt.get<AppDb>();
+    int re =
+        await appDb.detletitem('DELETE FROM expense WHERE id = ${expense.id}');
+    return re;
   }
 
   @preResolve
   @override
   Future<int> insert(Expense expense) async {
     var x = getIt.get<AppDb>();
-    return await x
-        .insert(''' 
+    return await x.insert(''' 
         INSERT INTO expense( value,title,details,note,date)VALUES 
     (${expense.value},"${expense.details}","${expense.title}","${expense.note}",${expense.date.microsecondsSinceEpoch})
     ''');
@@ -37,5 +41,12 @@ class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
   @override
   Future<int> update(Expense expense) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAll(List<Expense> expenses) async {
+    for (var element in expenses) {
+      await del(element);
+    }
   }
 }

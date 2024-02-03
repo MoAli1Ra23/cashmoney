@@ -62,4 +62,9 @@ class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
   Future<int> update(Expense expense) {
     throw UnimplementedError();
   }
+  
+  @override
+  Future<void> deleteAll(List<Expense> expenses) {
+     throw UnimplementedError();
+  }
 }
