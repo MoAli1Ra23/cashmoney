@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///clickable
 class MultiFuncList<T> extends StatefulWidget {
   final List items;
-  final void Function(List<T>)? onDeleteAll;
+  final void Function(List<T>) onDeleteAll;
   final void Function(int)? onDismiss;
   final Widget Function(BuildContext, int) builder;
   final ScrollPhysics? physics;
@@ -15,7 +15,7 @@ class MultiFuncList<T> extends StatefulWidget {
   const MultiFuncList(
       {super.key,
       required this.items,
-      this.onDeleteAll,
+    required   this.onDeleteAll,
       this.onDismiss,
       required this.builder,
       this.physics,
@@ -96,7 +96,7 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
             children: [
               Checkbox(value: selectAll, onChanged: (val) {}),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.delete_sweep)),
+                  onPressed:()=> widget.onDeleteAll!(selcted), icon: const Icon(Icons.delete_sweep)),
               Text(selcted.length.toString()),
               IconButton(onPressed: _deSelectAll, icon: const Icon(Icons.close))
             ],
