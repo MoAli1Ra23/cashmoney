@@ -13,22 +13,7 @@ class ManageExpensesPage extends StatelessWidget {
     context.read<ManageExpenses>().getExpenses();
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   elevation: 5,
-        //   leading: IconButton(
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //       },
-        //       icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-        //   title: const Text(
-        //     "  النفقات",
-        //     style: TextStyle(
-        //       //style
-        //       fontWeight: FontWeight.bold,
-        //       fontSize: 22,
-        //     ),
-        //   ),
-        // ),
+         
 
         floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -47,6 +32,7 @@ class ManageExpensesPage extends StatelessWidget {
               liftIcon: Icon(Icons.arrow_back_ios_new_rounded),
             ),
             ExpenseList(
+              height: MediaQuery.of(context).size.height-200,
               expensesProvide:
                   Provider.of<ManageExpenses>(context, listen: true),
             ),
