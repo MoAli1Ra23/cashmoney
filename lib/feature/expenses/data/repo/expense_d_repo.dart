@@ -3,8 +3,10 @@ import 'package:injectable/injectable.dart';
 import '../../domain/repo/expenese_abst_repo.dart';
 import '../../domain/entity/expense.dart';
 
-@Injectable(as: ExpenseAbstrctRepo)
+@LazySingleton(as: ExpenseAbstrctRepo)
+@Environment("debug")
 // @Singleton(as: ExpenseAbstrctRepo)
+
 class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
   @preResolve
   @override
