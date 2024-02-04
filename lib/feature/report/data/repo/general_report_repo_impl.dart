@@ -4,12 +4,13 @@ import 'package:cashmoney/feature/incomes/domain/repo/income_abst_repo.dart';
 import 'package:cashmoney/feature/report/domain/entity/day_repot.dart';
 import 'package:cashmoney/feature/report/domain/entity/general_report.dart';
 import 'package:cashmoney/injection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../expenses/domain/entity/expense.dart';
 import '../../domain/repo/general_report_repo.dart';
 
-/// goal generate DayReport object
-/// and list <DayReport>
+/// goal generate DayReport object has its field not null
+/// and list <DayReport> not empty
 /// steps
 /// 1  load  allIncomes and allIncomes
 /// 2  calculate beignValue;
@@ -17,9 +18,13 @@ import '../../domain/repo/general_report_repo.dart';
 /// 4  generate   report object
 ///
 
+@LazySingleton(as:  GeneralReportRepo )
+@Environment("prod")
 class GeneralReportRepoImpl extends GeneralReportRepo {
   late List<Income> allIncomes;
   late List<Expense> allExpenses;
+  /// load allIncomes &  allExpenses
+  ///  
   Future<void> load() async {
     allIncomes = await getIt.get<IncomeAbstrctRepo>().allIncomes();
     allExpenses = await getIt.get<ExpenseAbstrctRepo>().allexpenses();
@@ -29,6 +34,7 @@ class GeneralReportRepoImpl extends GeneralReportRepo {
   @override
   Future<GeneralReport> generatReport(DateTime begin, DateTime end) async {
     await load();
+    
     double totalexpenses = totalexpensesBerforDate(begin);
     double totalIncome = totalIncomeBerforDate(begin);
 
@@ -57,7 +63,7 @@ class GeneralReportRepoImpl extends GeneralReportRepo {
 
   ///
   void createDays(double startValu, DateTime dateTime) {
-    double totalExpense = _calculatEcpenses(dateTime);
+    double totalExpense = _calculatExpenses(dateTime);
     double totalIncomes = _calculatIncomes(dateTime);
 
     var d = DayReport(
@@ -87,7 +93,7 @@ class GeneralReportRepoImpl extends GeneralReportRepo {
     return d;
   }
 
-  double _calculatEcpenses(DateTime dateTime) {
+  double _calculatExpenses(DateTime dateTime) {
     var expenses = allExpenses.where((element) => element.date == dateTime);
 
     double d = 0;
@@ -97,6 +103,8 @@ class GeneralReportRepoImpl extends GeneralReportRepo {
     return d;
   }
 
+/// calculate  totale expenses Berfor bigen Date
+/// 
   double totalexpensesBerforDate(DateTime date) {
     double d = 0;
     allExpenses.where((element) => date == element.date).forEach((element) {
