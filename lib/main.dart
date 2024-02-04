@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashmoney/feature/report/UI/view_model/general_report_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ import 'feature/expenses/UI/view_model/manage_expenses.dart';
 import 'feature/incomes/UI/pages/mange_incomes_page.dart';
 import 'feature/incomes/UI/view_model/create_income.dart';
 import 'feature/incomes/UI/view_model/manage_incomes.dart';
+import 'feature/report/UI/page/generate_report_view.dart';
 import 'feature/wallate/UI/wallate_view_model.dart';
 import 'injection.dart';
 
@@ -32,6 +34,9 @@ void main() {
     ChangeNotifierProvider(
       create: (context) => WallateViewModel()..getValue(),
     ),
+    ChangeNotifierProvider(
+      create: (context) => GeneralReportViewModel(),
+    ),
   ], child: const MyApp()));
 // });
 }
@@ -48,7 +53,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.blueGrey.shade50),
-      // home: const ManageIcomesPage(),
+      // home: const GeneralReportView(),
       home: const MyMain(),
       // const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -131,9 +136,22 @@ class MyMain extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CustomButton(
-                      onPressed: () {},
-                      text: "aaa",
+                     
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const GeneralReportView(),
+                        ));
+                      },
+                      child: const Center(
+                        child: Text(
+                          "التقارير",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                        ),
+                      ),
                     ),
                     OutlinedButton(
                       onPressed: () {
