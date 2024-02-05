@@ -1,15 +1,13 @@
 import 'package:injectable/injectable.dart';
-
 import '../../../../../injection.dart';
 import '../../../../../shared/data/app_db.dart';
 import '../../../domain/entity/income.dart';
-import '../../../domain/repo/icome_repo.dart';
-
+ import '../../../domain/repo/income_abst_repo.dart';
 // Injectable IncomeabReo
-@Injectable(as: IncomeabReo)
+@LazySingleton(as: IncomeAbstrctRepo,env: ['prod'])
 // @Singleton(as:IncomeabReo,env: ["prod"])
-@Environment("prod")
-class IncomeReo extends IncomeabReo {
+// @Environment('prod')
+class IncomeReo extends IncomeAbstrctRepo {
   @override
   Future<List<Income>> allIncomes() async {
     var x = getIt.get<AppDb>();

@@ -1,12 +1,12 @@
    
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repo/icome_repo.dart';
-import '../../domain/entity/income.dart';
+ import '../../domain/entity/income.dart';
+import '../../domain/repo/income_abst_repo.dart';
 // @Injectable(as:IncomeabReo)
-@Injectable(as:IncomeabReo)
-@Environment("debug")
-  class IncomeDReop extends IncomeabReo{
+@LazySingleton(as:IncomeAbstrctRepo,env:["debug"])
+// @Environment("debug")
+  class IncomeDReop extends IncomeAbstrctRepo{
   @preResolve
   @override
   Future<List<Income>> allIncomes() {

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../injection.dart';
 import '../../domain/entity/income.dart';
+import '../../domain/repo/income_abst_repo.dart';
 
-import '../../domain/repo/icome_repo.dart'; // Import the provider package
-
+ 
 class ManageIcomes with ChangeNotifier {
   List<Income> _incomes = [];
   int value = 0;
@@ -13,7 +13,7 @@ class ManageIcomes with ChangeNotifier {
 
   String source = '';
   Future<void> income() async {
-    var x = getIt.get<IncomeabReo>();
+    var x = getIt.get<IncomeAbstrctRepo>();
     _incomes = await x.allIncomes();
     loading = false;
     notifyListeners();
@@ -30,7 +30,7 @@ class ManageIcomes with ChangeNotifier {
   Future<void> delete(int index) async {
     Income inc = incomes[index];
     incomes.removeAt(index);
-    IncomeabReo repo = getIt.get<IncomeabReo>();
+    IncomeAbstrctRepo repo = getIt.get<IncomeAbstrctRepo>();
     repo.del(inc);
     notifyListeners();
   }

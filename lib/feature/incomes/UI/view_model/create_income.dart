@@ -4,7 +4,7 @@ import '../../../../injection.dart';
 import '../../../wallate/domain/repo/wallate_repo.dart';
 import '../../domain/entity/income.dart';
 import '../../domain/entity/source.dart';
-import '../../domain/repo/icome_repo.dart';
+ import '../../domain/repo/income_abst_repo.dart';
 import '../../domain/repo/source_repo.dart';
 
 class CreateInCome with ChangeNotifier {
@@ -58,7 +58,7 @@ class CreateInCome with ChangeNotifier {
     if (isSourceValide == null && isValueValid == null) {}
     if (isSourceNew) await _insertSource();
 
-    await getIt.get<IncomeabReo>().insert(
+    await getIt.get<IncomeAbstrctRepo>().insert(
         Income(date: DateTime.now(), id: 0, source: source, value: value));
     await _updateWalate();
     reset();

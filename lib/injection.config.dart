@@ -26,7 +26,8 @@ import 'package:cashmoney/feature/incomes/data/repo/prod_repo/income_prod_repo.d
 import 'package:cashmoney/feature/incomes/data/repo/prod_repo/source_prod_repo.dart'
     as _i16;
 import 'package:cashmoney/feature/incomes/data/repo/source_d_repo.dart' as _i17;
-import 'package:cashmoney/feature/incomes/domain/repo/icome_repo.dart' as _i12;
+import 'package:cashmoney/feature/incomes/domain/repo/income_abst_repo.dart'
+    as _i12;
 import 'package:cashmoney/feature/incomes/domain/repo/source_repo.dart' as _i15;
 import 'package:cashmoney/feature/report/data/repo/general_report_repo_impl.dart'
     as _i11;
@@ -83,11 +84,11 @@ extension GetItInjectableX on _i1.GetIt {
       () => _i11.GeneralReportRepoImpl(),
       registerFor: {_prod},
     );
-    gh.factory<_i12.IncomeabReo>(
+    gh.lazySingleton<_i12.IncomeAbstrctRepo>(
       () => _i13.IncomeDReop(),
       registerFor: {_debug},
     );
-    gh.factory<_i12.IncomeabReo>(
+    gh.lazySingleton<_i12.IncomeAbstrctRepo>(
       () => _i14.IncomeReo(),
       registerFor: {_prod},
     );

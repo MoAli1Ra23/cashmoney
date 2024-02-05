@@ -4,7 +4,7 @@ import '../../domain/repo/expenese_abst_repo.dart';
 import '../../domain/entity/expense.dart';
 
 @LazySingleton(as: ExpenseAbstrctRepo)
-@Environment("debug")
+@Environment('debug')
 // @Singleton(as: ExpenseAbstrctRepo)
 
 class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
