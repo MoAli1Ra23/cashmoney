@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cashmoney/feature/incomes/domain/entity/income.dart';
 import 'package:cashmoney/shared/styles/styles.dart';
+import 'package:cashmoney/widgets/custom_reusable_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../widgets/cutom_app_bar.dart';
+import '../../../home/UI/view/widgets/wallate_balance.dart';
 import '../view_model/manage_incomes.dart';
 import '../widget/income_list_item.dart';
 import '../widget/multi_func_list.dart';
@@ -16,8 +17,6 @@ class ManageIcomesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // context.read<ManageIcomes>().income();
-    final incomeProvider = Provider.of<ManageIcomes>(context);
-    incomeProvider.income();
     return Scaffold(
 
         // appBar: AppBar(
@@ -37,44 +36,65 @@ class ManageIcomesPage extends StatelessWidget {
         //   ),
         // ),
 
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => CreateInComePage(),
-                ),
-              );
-            },
-            child: const Icon(Icons.add)),
         body: //const Center(child: Text("ddd")),
             SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-            child: Column(
-              children: [
-                const CustomAppBar(
-                  rightIcon: Icon(Icons.arrow_back_ios_new_rounded),
-                  title: Text("الدخل",style: Styles.textb30,),
-                  liftIcon: Icon(Icons.arrow_back_ios_new_rounded),
-                ),
-                const SizedBox(height: 10,),
-                MultiFuncList<Income>(
-                  height: MediaQuery.of(context).size.height-200,
-                    onDeleteAll: (List p0) {
-                      incomeProvider.deleteAll(p0.cast());
-                    },
-                    onDismiss: (p0) {
-                      incomeProvider.delete(p0);
-                    },
-                    items: incomeProvider.incomes,
-                    builder: (context, index) {
-                      return IncomeListItem(
-                          income: incomeProvider.incomes[index]);
-                    }),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 20, left: 15, right: 15, bottom: 10),
+              child: CustomReusableAppBar(
+                title: "الدخل",
+                titleStyle: Styles.textb30,
+                leftIcon: const Icon(Icons.arrow_back_ios_new_rounded),
+                righeIcon: const Icon(Icons.add_rounded),
+                onLeftTab: () => Navigator.of(context).pop(),
+                onRightTab: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CreateInComePage(),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        )
+            const SizedBox(
+              height: 10,
+            ),
+            const Hero(tag: "mony", child: WallateBalance()),
+            Consumer<ManageIcomes>(
+              builder: (_, incomeProvider, n) {
+                incomeProvider.income();
+                if (incomeProvider.loading) {
+                  return const Center(
+                    child: Text(
+                      "No Icome",
+                      style: Styles.text14,
+                    ),
+                  );
+                } else {
+                  return MultiFuncList<Income>(
+                      height: MediaQuery.of(context).size.height *.70,
+                      onDeleteAll: (List p0) {
+                        incomeProvider.deleteAll(p0.cast());
+                      },
+                      onDismiss: (p0) {
+                        incomeProvider.delete(p0);
+                      },
+                      items: incomeProvider.incomes,
+                      builder: (context, index) {
+                        return IncomeListItem(
+                            income: incomeProvider.incomes[index]);
+                      });
+                }
+              },
+            )
+          ],
+        ),
+      ),
+    )
         // ListIncoms(incomes:)
 
         // body: IncomeList(
