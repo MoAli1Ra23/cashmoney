@@ -32,10 +32,7 @@ class CreateExpenses with ChangeNotifier {
       isValueValid = null;
     }
     notifyListeners();
-    print("/++++++++++++++++/");
-    print(value);
-    print(isValueValid);
-  }
+     }
 
   void validateTitle(String input) {
     if (input.isEmpty) {
