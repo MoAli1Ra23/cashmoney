@@ -1,8 +1,10 @@
 import 'package:cashmoney/feature/report/UI/page/widgets/days_date_table.dart';
 import 'package:cashmoney/feature/report/UI/page/widgets/select_dates.dart';
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../view_model/general_report_view_model.dart';
+
 class GeneralReportView extends StatelessWidget {
   const GeneralReportView({super.key});
   @override
@@ -16,13 +18,28 @@ class GeneralReportView extends StatelessWidget {
                 vm: value,
               );
             } else {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: DaysDateTable(days: value.report.days,),
-                  )
-                ],
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(DateFormat('yyyy-MM-dd').format(value.begin!)),
+                
+                          Text(DateFormat('yyyy-MM-dd').format(value.end!)),
+                
+                        ],
+                      ),
+                      DaysDateTable(
+                        days: value.report.days,
+                      )
+                    ],
+                  ),
+                ),
               );
             }
           }
