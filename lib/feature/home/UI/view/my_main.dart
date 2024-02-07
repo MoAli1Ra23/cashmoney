@@ -50,7 +50,7 @@ class _MyMainState extends State<MyMain> {
                               // x = 230;
                               // y = 150; //MediaQuery.of(context).size.height*0.2;
                               // z = MediaQuery.of(context).size.height * -0.2;
-                    
+                                        
                               isOpen = true;
                             } else {
                               // scaleFactor = 1;
@@ -58,7 +58,7 @@ class _MyMainState extends State<MyMain> {
                               // y = 0;
                               // isOpen = false;
                             }
-                    
+                                        
                             print(y);
                             print(z);
                             print(x);
@@ -73,7 +73,7 @@ class _MyMainState extends State<MyMain> {
                       ),
                     ),
                     const Spacer(),
-                    const WallateBalance(),
+                    const Hero(tag: "mony", child: WallateBalance()),
                     const Spacer(flex: 3,),
 
                     const ButtonsRow(),
