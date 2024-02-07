@@ -75,7 +75,7 @@ WHERE id=${1}
       return const Some(LowWallateBalanceFailure(msg: "رصيد غير كافي"));
     }
 
-    var updatedWallate = wallate.copyWith(balance: wallate.balance + val);
+    var updatedWallate = wallate.copyWith(balance: wallate.balance - val);
     await update(updatedWallate);
     return none();
   }
