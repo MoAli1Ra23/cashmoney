@@ -18,9 +18,9 @@ class CreateInCome with ChangeNotifier {
   void validateValue(String s) {
     double? x = double.tryParse(s);
     if (x == null) {
-      isValueValid = "not num";
+      isValueValid = "لابد ان يكون رقم";
     } else if (x <= 0) {
-      isValueValid = 'naigativ';
+      isValueValid = 'قيمة موجبة فقط';
     } else {
       value = x;
       isValueValid = null;
@@ -28,16 +28,20 @@ class CreateInCome with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> validateSource(String value) async {
+  Future<void> sourceChange(String value) async {
     await _filterSource(value);
+    _validateSource(value);
+    notifyListeners();
+  }
+
+  void _validateSource(String value) {
     if (value.length < 2) {
-      isSourceValide = "Soo short";
+      isSourceValide = " لا بد ان يكون حرفين علي الاقل";
     } else {
       isSourceValide = null;
       source = value;
       isSourceNew = true;
     }
-    notifyListeners();
   }
 
   Future<void> _filterSource(String value) async {
@@ -55,13 +59,20 @@ class CreateInCome with ChangeNotifier {
   }
 
   Future<void> save() async {
-    if (isSourceValide == null && isValueValid == null) {}
+    if (isSourceValide == null && isValueValid == null) {
+
+    
     if (isSourceNew) await _insertSource();
 
-    await getIt.get<IncomeAbstrctRepo>().insert(
-        Income(date: DateTime.now(), id: 0, source: source, value: value));
+      _insertIncome();
     await _updateWalate();
     reset();
+    }
+  }
+
+  void _insertIncome() async {
+     await getIt.get<IncomeAbstrctRepo>().insert(
+        Income(date: DateTime.now(), id: 0, source: source, value: value));
   }
 
   Future<void> _insertSource() async {
