@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'feature/expenses/UI/view_model/create_expenses.dart';
+import 'feature/expenses/UI/view_model/expense_type_chose.dart';
 import 'feature/expenses/UI/view_model/manage_expenses.dart';
 import 'feature/home/UI/view/my_main.dart';
 import 'feature/incomes/UI/view_model/create_income.dart';
@@ -34,6 +35,9 @@ void main() {
     ),
     ChangeNotifierProvider(
       create: (context) => GeneralReportViewModel(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ExpenseTypeChoser(),
     ),
   ], child: const MyApp()));
 // });
