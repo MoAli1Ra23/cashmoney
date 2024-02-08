@@ -101,10 +101,22 @@ CREATE TABLE  "wallate"(
   }
 
   @preResolve
-  Future<int> detletitem(String s) async {
+  Future<int> detletitem(String s,[List<Object?>? arguments]) async {
     Database? md = await db;
-    var r = await md!.rawDelete(s);
-    return r;
+    if( arguments!=null){
+         await md!.execute(s);
+
+    // var r = await md!.rawDelete(s,arguments);
+        return 1;
+
+    }
+    else
+    {
+       var r = await md!.rawDelete(s);
+        return r;
+
+    }
+    
   }
 
   @preResolve

@@ -38,5 +38,11 @@ import '../../domain/repo/income_abst_repo.dart';
     // TODO: implement update
     throw UnimplementedError();
   }
+  
+  @override
+  Future<int> deleteAll(List<int> ids) {
+    // TODO: implement deleteAll
+    throw UnimplementedError();
+  }
 
 }

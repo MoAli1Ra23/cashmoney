@@ -5,4 +5,5 @@ abstract class IncomeAbstrctRepo {
   Future<int> del(Income income);
   Future<int> update(Income income);
   Future<List<Income>> allIncomes();
+  Future<int> deleteAll(List<int> ids);
 }

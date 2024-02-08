@@ -86,11 +86,13 @@ class ManageIcomesPage extends StatelessWidget {
                       height: MediaQuery.of(context).size.height *.70,
                       onDeleteAll: (List p0) {
                         incomeProvider.deleteAll(p0.cast());
+
                         context.read<WallateViewModel>().getValue();
                       },
                       onDismiss: (p0) {
-                        incomeProvider.delete(p0);
+                        // incomeProvider.delete(p0);
                       },
+
                       items: incomeProvider.incomes,
                       builder: (context, index) {
                         return IncomeListItem(

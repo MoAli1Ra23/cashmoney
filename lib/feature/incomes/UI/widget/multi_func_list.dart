@@ -75,20 +75,7 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
     });
   }
 
-  void deleteAll() {
-    for (var element in selcted) {
-      var index= items.indexOf(element);
-      cheklist.removeAt(index);
   
-      
-      items.remove(element);
-      
-    }
-    selcted.clear();
-        setState(() {});
-
-  }
-
   void _deSelectAll() {
     selcted.clear();
     isSelection = false;
@@ -111,8 +98,8 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
               Checkbox(value: selectAll, onChanged: (val) {}),
               IconButton(
                   onPressed: () {
-                    deleteAll();// remove item and widgets;
                     widget.onDeleteAll(selcted);
+                    // deleteAllSelected(); // remove item and widgets;
                   },
                   icon: const Icon(Icons.delete_sweep)),
               Text(selcted.length.toString()),
@@ -124,7 +111,7 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
           width: widget.width ?? MediaQuery.of(context).size.width,
           child: ListView.builder(
               physics: widget.physics ?? const ClampingScrollPhysics(),
-              itemCount: items.length,
+              itemCount: items.length??0,
               itemBuilder: (context, index) {
                 return InkWell(
                   onLongPress: () => _select(index),

@@ -2,9 +2,10 @@ import 'package:injectable/injectable.dart';
 import '../../../../../injection.dart';
 import '../../../../../shared/data/app_db.dart';
 import '../../../domain/entity/income.dart';
- import '../../../domain/repo/income_abst_repo.dart';
+import '../../../domain/repo/income_abst_repo.dart';
+
 // Injectable IncomeabReo
-@LazySingleton(as: IncomeAbstrctRepo,env: ['prod'])
+@LazySingleton(as: IncomeAbstrctRepo, env: ['prod'])
 // @Singleton(as:IncomeabReo,env: ["prod"])
 // @Environment('prod')
 class IncomeReo extends IncomeAbstrctRepo {
@@ -31,6 +32,19 @@ class IncomeReo extends IncomeAbstrctRepo {
     return await x.insert('''  
        INSERT INTO Incomes(value, source, date)VALUES (${income.value},"${income.source}", ${income.date.millisecondsSinceEpoch})
        ''');
+  }
+
+  @override
+  Future<int> deleteAll(List<int> ids) async {
+    // int count = await db.delete(tableTodo, where: 'columnId = ?', whereArgs: [id]);
+    AppDb appDb = getIt.get<AppDb>();
+    for (var id in ids) {
+      print('_______________________________');
+      print(id);
+      await appDb.detletitem('DELETE FROM incomes WHERE id = ${id}');
+    }
+
+    return 1;
   }
 
   @override
