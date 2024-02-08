@@ -1,9 +1,11 @@
+import 'package:cashmoney/feature/expenses/UI/page/widgets/expenses_type_choser_view.dart';
 import 'package:cashmoney/feature/wallate/UI/wallate_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../shared/styles/styles.dart';
-import '../../../../widgets/cutom_app_bar.dart';
+import '../../../../widgets/custom_reusable_app_bar.dart';
+import '../../../../widgets/custom_text_field.dart';
 import '../view_model/create_expenses.dart';
 
 class CreateExpensesPage extends StatelessWidget {
@@ -24,14 +26,19 @@ class CreateExpensesPage extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              const CustomAppBar(
-                rightIcon: Icon(Icons.arrow_back_ios_new_rounded),
-                title: Text(
-                  "إضافة نفقات",
-                  style: Styles.textb30,
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 20, left: 15, right: 15, bottom: 10),
+                child: CustomReusableAppBar(
+                  title: "إضافة نفقات",
+                  titleStyle: Styles.textb30,
+                  leftIcon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  righeIcon: const Icon(Icons.add_rounded),
+                  onLeftTab: () => Navigator.of(context).pop(),
+                  onRightTab: () {},
                 ),
-                liftIcon: Icon(Icons.arrow_back_ios_new_rounded),
               ),
+             
               Consumer<CreateExpenses>(
                 builder: (context, pr, _) => Form(
                   key: kForm,
@@ -52,67 +59,52 @@ class CreateExpensesPage extends StatelessWidget {
                                 )
                               : const SizedBox(height: 0),
                         ),
-                        Container(
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(.4),
-                                offset: const Offset(0, 3),
-                                blurRadius: 5,
-                                blurStyle: BlurStyle.outer),
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(.4),
-                                offset: const Offset(0, .3),
-                                blurRadius: 5,
-                                blurStyle: BlurStyle.outer)
-                          ]),
-                          child: TextFormField(
-                            key: kVlaue,
-                            controller: vc,
-                            onChanged: (value) => pr.validateValue(value),
-                            validator: (_) => pr.isValueValid,
-                            decoration: InputDecoration(
-                                label: const Text("القيمة"),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5))),
-                          ),
+///                         
+                        CustomTextField(
+                          hintText: "القيمة",
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          textKey: kVlaue,
+                          controller: vc,
+                          onChanged: (value) => pr.validateValue(value),
+                          validator: (_) => pr.isValueValid,
                         ),
                         const SizedBox(
                           height: 15,
                         ),
-                        TextFormField(
-                          key: ktitle,
-                          controller: tc,
-                          onChanged: (value) => pr.validateTitle(value),
-                          validator: (_) => pr.isTitleValid,
-                          decoration: InputDecoration(
-                              label: const Text("البند"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5))),
-                        ),
+                        ExpnesesTypeChoser(onSelect:(value)=> pr.validateTitle(value),),
+
+                        // CustomTextField(
+                        //   textKey: ktitle,
+                        //   controller: tc,
+                        //   keyboardType: TextInputType.text,
+                        //   hintText: "البند",
+                        //   onChanged: (value) => pr.validateTitle(value),
+                        //   validator: (_) => pr.isTitleValid,
+                        // ),
                         const SizedBox(
                           height: 15,
                         ),
-                        TextFormField(
-                          key: kdetials,
+
+                        CustomTextField(
+                          textKey: kdetials,
                           controller: dc,
+                          keyboardType: TextInputType.text,
+                          // label: const Text("التفاصيل"),
+                          hintText: "التفاصيل",
                           onChanged: (value) => pr.validateDetalils(value),
                           validator: (_) => pr.isDetailsValid,
-                          decoration: InputDecoration(
-                              label: const Text("التفاصيل"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5))),
                         ),
                         const SizedBox(
                           height: 15,
                         ),
-                        TextFormField(
-                          onChanged: (value) => pr.validateDetalils(value),
-                          validator: (_) => pr.isValueValid,
-                          decoration: InputDecoration(
-                              label: const Text("ملاحظات"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5))),
+                        CustomTextField(
+                          keyboardType: TextInputType.text,
+                          hintText: "ملاحظات",
+                          onChanged: (value) {},
+                          validator: null,
                         ),
+                        //
                         const SizedBox(
                           height: 15,
                         ),
