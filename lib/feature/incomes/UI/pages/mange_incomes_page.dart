@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cashmoney/feature/incomes/domain/entity/income.dart';
+import 'package:cashmoney/feature/wallate/UI/wallate_view_model.dart';
 import 'package:cashmoney/shared/styles/styles.dart';
 import 'package:cashmoney/widgets/custom_reusable_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -67,18 +68,25 @@ class ManageIcomesPage extends StatelessWidget {
             Consumer<ManageIcomes>(
               builder: (_, incomeProvider, n) {
                 incomeProvider.income();
-                if (incomeProvider.loading) {
-                  return const Center(
-                    child: Text(
-                      "No Icome",
-                      style: Styles.text14,
-                    ),
+                if (incomeProvider.loading|| incomeProvider.incomes.isEmpty) {
+                  return const Column(
+                    
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height:100,),
+                      Text(
+                        "No Icome",
+                        style: Styles.text14,
+                      ),
+                    ],
                   );
                 } else {
                   return MultiFuncList<Income>(
                       height: MediaQuery.of(context).size.height *.70,
                       onDeleteAll: (List p0) {
                         incomeProvider.deleteAll(p0.cast());
+                        context.read<WallateViewModel>().getValue();
                       },
                       onDismiss: (p0) {
                         incomeProvider.delete(p0);

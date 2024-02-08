@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
- ///MultiSelecting
+///MultiSelecting
 ///clickable
 class MultiFuncList<T> extends StatefulWidget {
   final List items;
@@ -15,7 +15,7 @@ class MultiFuncList<T> extends StatefulWidget {
   const MultiFuncList(
       {super.key,
       required this.items,
-    required   this.onDeleteAll,
+      required this.onDeleteAll,
       this.onDismiss,
       required this.builder,
       this.physics,
@@ -75,6 +75,20 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
     });
   }
 
+  void deleteAll() {
+    for (var element in selcted) {
+      var index= items.indexOf(element);
+      cheklist.removeAt(index);
+  
+      
+      items.remove(element);
+      
+    }
+    selcted.clear();
+        setState(() {});
+
+  }
+
   void _deSelectAll() {
     selcted.clear();
     isSelection = false;
@@ -96,14 +110,18 @@ class _MultiFuncListState<T> extends State<MultiFuncList> {
             children: [
               Checkbox(value: selectAll, onChanged: (val) {}),
               IconButton(
-                  onPressed:()=> widget.onDeleteAll!(selcted), icon: const Icon(Icons.delete_sweep)),
+                  onPressed: () {
+                    deleteAll();// remove item and widgets;
+                    widget.onDeleteAll(selcted);
+                  },
+                  icon: const Icon(Icons.delete_sweep)),
               Text(selcted.length.toString()),
               IconButton(onPressed: _deSelectAll, icon: const Icon(Icons.close))
             ],
           ),
         SizedBox(
-          height: widget.height?? MediaQuery.of(context).size.height * .88,
-          width: widget.width?? MediaQuery.of(context).size.width,
+          height: widget.height ?? MediaQuery.of(context).size.height * .88,
+          width: widget.width ?? MediaQuery.of(context).size.width,
           child: ListView.builder(
               physics: widget.physics ?? const ClampingScrollPhysics(),
               itemCount: items.length,

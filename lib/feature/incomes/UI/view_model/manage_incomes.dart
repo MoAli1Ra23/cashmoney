@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../injection.dart';
+import '../../../wallate/domain/repo/wallate_repo.dart';
 import '../../domain/entity/income.dart';
 import '../../domain/repo/income_abst_repo.dart';
 
- 
 class ManageIcomes with ChangeNotifier {
   List<Income> _incomes = [];
   int value = 0;
@@ -20,18 +20,26 @@ class ManageIcomes with ChangeNotifier {
   }
 
   Future<void> deleteAll(List<Income> list) async {
-    for (var element in list) {
-      await delete(incomes.indexOf(element));
-      incomes.remove(element);
+    for (var ee in list) {
+      Income inc = incomes.where((element) => element.id == ee.id).first;
+
+      var index = incomes.indexOf(inc);
+
+      await delete(index);
     }
     notifyListeners();
   }
 
   Future<void> delete(int index) async {
     Income inc = incomes[index];
-    incomes.removeAt(index);
     IncomeAbstrctRepo repo = getIt.get<IncomeAbstrctRepo>();
-    repo.del(inc);
+    await repo.del(inc);
+    _editWallate(inc);
     notifyListeners();
+  }
+
+  void _editWallate(Income inc) {
+    var wallate = getIt.get<WallateRepo>();
+    wallate.decrWalate(inc.value);
   }
 }
