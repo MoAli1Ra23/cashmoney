@@ -105,6 +105,8 @@ class CreateExpenses with ChangeNotifier {
       if (r.isNone()) {
         await _insertExpenses();
         masge = " تم الاضافة";
+        
+
       }
 
       insertExpensesTitle();
@@ -112,6 +114,7 @@ class CreateExpenses with ChangeNotifier {
       masge = "الرصيد لا يكفي";
     }
     notifyListeners();
+    
   }
 
   void insertExpensesTitle() async {

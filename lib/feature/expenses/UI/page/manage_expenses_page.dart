@@ -1,4 +1,3 @@
-import 'package:cashmoney/widgets/cutom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/styles/styles.dart';
@@ -12,10 +11,8 @@ class ManageExpensesPage extends StatelessWidget {
   const ManageExpensesPage({super.key});
   @override
   Widget build(BuildContext context) {
-    context.read<ManageExpenses>().getExpenses();
-    return SafeArea(
+     return SafeArea(
       child: Scaffold(
-        
         body: Column(
           children: [
             Padding(
@@ -40,10 +37,20 @@ class ManageExpensesPage extends StatelessWidget {
               height: 10,
             ),
             const Hero(tag: "mony", child: WallateBalance()),
-            ExpenseList(
-              height: MediaQuery.of(context).size.height - 200,
-              expensesProvide:
-                  Provider.of<ManageExpenses>(context, listen: true),
+            const SizedBox(
+              height: 50,
+            ),
+            Consumer<ManageExpenses>(
+              builder: (_, value, child) {
+                return value.loaded
+                    ? ExpenseList(
+                        height: MediaQuery.of(context).size.height -250,
+                        expensesProvide: value,
+                      )
+                    : const Center(
+                        child: Text("No Expenses"),
+                      );
+              },
             ),
           ],
         ),
