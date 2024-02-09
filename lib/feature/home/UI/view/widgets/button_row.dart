@@ -1,5 +1,6 @@
-
+import 'package:cashmoney/feature/expenses/UI/view_model/manage_expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../expenses/UI/page/manage_expenses_page.dart';
 import '../../../../incomes/UI/pages/mange_incomes_page.dart';
@@ -32,10 +33,14 @@ class ButtonsRow extends StatelessWidget {
             text: "التقارير",
           ),
           CustomRowButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const ManageExpensesPage(),
-              ));
+            onPressed: () async {
+              await Provider.of<ManageExpenses>(context, listen: false)
+                  .getExpenses()
+                  .then((value) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const ManageExpensesPage(),
+                ));
+              });
             },
             text: "النفقات",
           ),
