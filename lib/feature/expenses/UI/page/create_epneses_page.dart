@@ -1,4 +1,3 @@
-import 'package:cashmoney/feature/expenses/UI/page/widgets/expenses_type_choser_view.dart';
 import 'package:cashmoney/feature/wallate/UI/wallate_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +37,6 @@ class CreateExpensesPage extends StatelessWidget {
                   onRightTab: () {},
                 ),
               ),
-             
               Consumer<CreateExpenses>(
                 builder: (context, pr, _) => Form(
                   key: kForm,
@@ -59,7 +57,8 @@ class CreateExpensesPage extends StatelessWidget {
                                 )
                               : const SizedBox(height: 0),
                         ),
-///                         
+
+                        ///
                         CustomTextField(
                           hintText: "القيمة",
                           keyboardType: const TextInputType.numberWithOptions(
@@ -72,16 +71,40 @@ class CreateExpensesPage extends StatelessWidget {
                         const SizedBox(
                           height: 15,
                         ),
-                        ExpnesesTypeChoser(onSelect:(value)=> pr.validateTitle(value),),
+                        // ExpnesesTypeChoser(onSelect:(value)=> pr.validateTitle(value),),
 
-                        // CustomTextField(
-                        //   textKey: ktitle,
-                        //   controller: tc,
-                        //   keyboardType: TextInputType.text,
-                        //   hintText: "البند",
-                        //   onChanged: (value) => pr.validateTitle(value),
-                        //   validator: (_) => pr.isTitleValid,
-                        // ),
+                        CustomTextField(
+                          textKey: ktitle,
+                          controller: tc,
+                          keyboardType: TextInputType.text,
+                          hintText: "البند",
+                          onChanged: (value) => pr.validateTitle(value),
+                          validator: (_) => pr.isTitleValid,
+                        ),
+                        if (pr.titles.isNotEmpty || pr.titles == null)
+                          SizedBox(
+                            height: pr.titles.length * 50,
+                            child: ListView.builder(
+                                itemCount: pr.titles.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      tc.text = pr.titles[index].text;
+
+                                      pr.setTitel(pr.titles[index].text);
+                                    },
+                                    child: ListTile(
+                                      trailing: pr.titles[index].icon == null
+                                          ? const Icon(Icons.edit)
+                                          : pr.titles[index].icon!,
+                                      iconColor: Colors.pink.shade400,
+                                      title: Text(
+                                        pr.titles[index].text,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
                         const SizedBox(
                           height: 15,
                         ),

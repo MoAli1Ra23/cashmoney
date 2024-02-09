@@ -16,7 +16,21 @@ class CreateExpenses with ChangeNotifier {
   String details = "";
   String? isDetailsValid; // for save erro masge if details is not valide
   bool isTitlenew = true;
-  List<String> titles = [];
+  List<ExpensesTitle> constTitle = [
+    const ExpensesTitle(
+        id: 0, text: "الصحة", icon: Icon(Icons.monitor_heart_rounded)),
+    const ExpensesTitle(id: 0, text: "تعليم", icon: Icon(Icons.school_rounded)),
+    const ExpensesTitle(
+        id: 0, text: "مطبخ", icon: Icon(Icons.soup_kitchen_rounded)),
+    const ExpensesTitle(
+        id: 0, text: "ملابس", icon: Icon(Icons.soup_kitchen_rounded)),
+    const ExpensesTitle(
+        id: 0, text: "سيارة", icon: Icon(Icons.car_crash_sharp)),
+    const ExpensesTitle(
+        id: 0, text: "انتقالات", icon: Icon(Icons.bus_alert_rounded)),
+    const ExpensesTitle(id: 0, text: "ايجار", icon: Icon(Icons.house)),
+  ];
+  List<ExpensesTitle> titles = [];
   String? note;
   String? masge;
   // validation and inputs
@@ -32,16 +46,39 @@ class CreateExpenses with ChangeNotifier {
       isValueValid = null;
     }
     notifyListeners();
-     }
+  }
 
-  void validateTitle(String input) {
+  Future<void> validateTitle(String input) async {
     if (input.isEmpty) {
       isTitleValid = 'لا يمكن ان تكون المصورفات فارغة';
     } else if (input.length < 2) {
       isTitleValid = "قصيرة جدا";
     } else {
       isTitleValid = null;
+      await _filterTitles(input);
       title = input;
+    }
+    notifyListeners();
+  }
+
+  void setTitel(String text) {
+
+    title = text;
+    
+
+    isTitleValid = null;
+    titles.clear();
+    notifyListeners();
+  }
+
+  Future<void> _filterTitles(String input) async {
+    titles.clear();
+    if ((input.trim()).isEmpty) {
+    } else {
+      ExpensesTitleAbstRepo repo = getIt.get<ExpensesTitleAbstRepo>();
+      var l = await repo.alltitel();
+      l.addAll(constTitle);
+      titles.addAll(l.where((element) => element.text.contains(input)));
     }
     notifyListeners();
   }
