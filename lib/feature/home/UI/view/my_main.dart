@@ -1,9 +1,9 @@
 import 'package:cashmoney/feature/home/UI/view/widgets/button_row.dart';
 import 'package:cashmoney/feature/home/UI/view/widgets/wallate_balance.dart';
 import 'package:cashmoney/shared/styles/styles.dart';
-import 'package:cashmoney/widgets/cutom_app_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n.dart';
 import '../../../../widgets/custom_reusable_app_bar.dart';
 
 class MyMain extends StatefulWidget {
@@ -41,7 +41,7 @@ class _MyMainState extends State<MyMain> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal:  16.0),
                       child: CustomReusableAppBar(
-                        title: "CashMoney",
+                        title:S.of(context).cashMoney , //S.of(context).CashMoney,
                         titleStyle:  Styles.textb30,
                         onRightTab: () {
                           setState(() {
