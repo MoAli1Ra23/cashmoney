@@ -8,14 +8,20 @@ class ExpenseTypeChoser extends ChangeNotifier {
   List<ExpensesTitle> types = [];
   String? isTitleValid;
   Future<void> load(String vale) async {
+    if(vale!=null || (vale.trim()).isNotEmpty)
+    {
     ExpensesTitleAbstRepo repo = getIt.get<ExpensesTitleAbstRepo>();
     var s = await repo.alltitel();
     types = s.where((element) => element.text.contains(vale)).toList();
+    }
+
     notifyListeners();
+    
   }
 
   void validateTitle(String? value) {
     if (isSelected && types.isEmpty) {
+      
       return;
     }
     isSelected = false;
@@ -23,9 +29,9 @@ class ExpenseTypeChoser extends ChangeNotifier {
       isTitleValid = "لا بد ان يكون اكثر من حرفين";
       notifyListeners();
     }
-    {
-      load(value!);
-    }
+    
+      load((value!).trim());
+    
   }
 
   bool isSelected = false;
