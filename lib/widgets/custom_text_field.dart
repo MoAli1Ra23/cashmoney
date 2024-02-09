@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cashmoney/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -33,7 +34,7 @@ final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       height: height?? 70,
       width: width,
       decoration: BoxDecoration(color: Colors.white,
@@ -60,6 +61,7 @@ final TextInputType? keyboardType;
           hintText: hintText,
           errorText: errorText,
           prefixIcon: prefixIcon,
+          hintStyle: Styles.textb20,
           prefixIconColor: prefixIconColor,
         ),
         onChanged: onChanged,
