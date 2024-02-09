@@ -21,28 +21,24 @@ import '../../domain/repo/income_abst_repo.dart';
 
   @override
   Future<int> del(Income income) {
-    // TODO: implement del
-    throw UnimplementedError();
+     throw UnimplementedError();
   }
   @preResolve
 
   @override
   Future<int> insert(Income income) {
-    // TODO: implement insert
-    throw UnimplementedError();
+     throw UnimplementedError();
   }
   @preResolve
 
   @override
   Future<int> update(Income income) {
-    // TODO: implement update
-    throw UnimplementedError();
+     throw UnimplementedError();
   }
   
   @override
   Future<int> deleteAll(List<int> ids) {
-    // TODO: implement deleteAll
-    throw UnimplementedError();
+     throw UnimplementedError();
   }
 
 }

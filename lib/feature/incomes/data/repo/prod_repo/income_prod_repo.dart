@@ -39,8 +39,7 @@ class IncomeReo extends IncomeAbstrctRepo {
     // int count = await db.delete(tableTodo, where: 'columnId = ?', whereArgs: [id]);
     AppDb appDb = getIt.get<AppDb>();
     for (var id in ids) {
-      print('_______________________________');
-      print(id);
+      
       await appDb.detletitem('DELETE FROM incomes WHERE id = ${id}');
     }
 
