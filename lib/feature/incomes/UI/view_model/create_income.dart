@@ -15,7 +15,12 @@ class CreateInCome with ChangeNotifier {
   String? isSourceValide;
   List<String> sources = [];
   bool isSourceNew = true;
-  void validateValue(String s) {
+  void setDate(DateTime dateTime){
+    date=dateTime;
+    notifyListeners();
+    
+  }
+   void validateValue(String s) {
     double? x = double.tryParse(s);
     if (x == null) {
       isValueValid = "لابد ان يكون رقم";

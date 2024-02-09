@@ -1,7 +1,9 @@
-import 'package:cashmoney/widgets/cutom_app_bar.dart';
+import 'dart:ui';
+
+import 'package:cashmoney/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:date_picker_timeline/date_picker_timeline.dart' as date;
 import '../../../../shared/styles/styles.dart';
 import '../../../../widgets/custom_reusable_app_bar.dart';
 import '../view_model/create_income.dart';
@@ -50,7 +52,6 @@ class CreateInComePage extends StatelessWidget {
               righeIcon: const Icon(Icons.menu),
             ),
           ),
- 
           Form(
             key: k,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -62,46 +63,41 @@ class CreateInComePage extends StatelessWidget {
                   child: ListView(
                     physics: const ClampingScrollPhysics(),
                     children: [
-                      TextFormField(
-                        key: vkey,
+                      CustomTextField(
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        textKey: vkey,
+                        hintText: "القيمة",
+                        
                         controller: tc,
                         onChanged: (v) => pr.validateValue(v),
-                        validator: //(value) => pr.isValueValid,
-                            (_) => context.watch<CreateInCome>().isValueValid,
-                        decoration: InputDecoration(
-                            // errorText: pr.isValueValid,
-                            label: const Text("القيمة"),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5))),
+                        validator: (_) => pr.isValueValid,
                       ),
                       const SizedBox(
                         height: 15.0,
                       ),
-                      TextFormField(
-                        key: skey,
+                      CustomTextField(
+                        textKey: skey,
+                        hintText: 'المصدر ',
                         controller: stc,
                         onChanged: (v) => pr.sourceChange(v),
-                        validator: // (value) => pr.isValueValid,
-                            (_) => context.watch<CreateInCome>().isSourceValide,
-                        decoration: InputDecoration(
-                            // errorText: pr.isValueValid,
-                            label: const Text("المصدر"),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5))),
-                      ),
-                      const SizedBox(
-                        height: 15.0,
+                        validator: (_) =>
+                            context.watch<CreateInCome>().isSourceValide,
                       ),
                       if (pr.sources.isNotEmpty)
                         SizedBox(
                           height: pr.sources.length * 50,
                           child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 40),
                             itemCount: pr.sources.length,
                             itemBuilder: (context, index) => GestureDetector(
-                              child: Text(
-                                pr.sources[index],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              child: Card(
+                                child: Text(
+                                  pr.sources[index],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
                               ),
                               onTap: () {
                                 stc.text = pr.sources[index];
@@ -110,6 +106,23 @@ class CreateInComePage extends StatelessWidget {
                             ),
                           ),
                         ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      SizedBox(
+                        height: 120,
+                        child: date.DatePicker(DateTime.now(),
+                            locale: 'ar',
+                            selectionColor: Colors.blueGrey,
+                            monthTextStyle: Styles.textb18,
+                            initialSelectedDate: pr.date,
+                            onDateChange: (selectedDate) {
+                          pr.setDate(selectedDate);
+                        }),
+                      ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
                       ElevatedButton(
                           onPressed: () {
                             pr.save();
