@@ -45,8 +45,10 @@ class ExpenseDebugeRepo extends ExpenseAbstrctRepo {
 
   @override
   Future<void> deleteAll(List<Expense> expenses) async {
+    AppDb appDb = getIt.get<AppDb>();
+
     for (var element in expenses) {
-      await del(element);
+      await appDb.detletitem('DELETE FROM expense WHERE id = ${element.id}');
     }
   }
 }
